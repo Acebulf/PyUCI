@@ -5,8 +5,6 @@ The Python UCI Chess Engine Interface (PUCEI or PyUCI) allows communication with
 
 In very early stages of development.
 
-For an example of use see rungame.py (making an engine play itself.) 
-
 Here is an example where we make Stockfish play itself: (see rungame.py)
 
 ```Python
