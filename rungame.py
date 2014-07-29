@@ -1,3 +1,7 @@
+"""
+Example of use of GameSession and Engine to make Stockfish play itself.
+"""
+
 from gameSession import GameSession
 from engine import Engine
 
