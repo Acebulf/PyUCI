@@ -6,7 +6,7 @@ All times are referred to in milliseconds as per UCI protocol.
 import time
 
 class TimeControl:
-    def __init__(self, starttime, inc):
+    def __init__(self, starttime, inc=0):
         """
         starttime is the time at start in milliseconds
             -> for different start times, use a tuple
@@ -28,7 +28,7 @@ class TimeControl:
             whiteInc, blackInc = inc
         except TypeError:
             whiteInc = blackInc = inc
-        self.increment = [whiteInc,blackInc]
+        self.increment = [whiteInc, blackInc]
 
         self._time = None
         self.turn = None # 0 for white, 1 for black.  
