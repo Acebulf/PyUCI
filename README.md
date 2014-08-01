@@ -25,12 +25,19 @@ where all times are in milliseconds, following the UCI standard.
 #Make the clock start at 5 minutes and increment the clock by 5 seconds after each turn.
 GameSession(eng1,eng2,time=(300e3,5e3))
 ```    
+
+or perhaps, for cleaner syntax, use minutes and seconds for the starting time
+and increment time, respectively.
+```Python
+GameSession(eng1,eng2,time=(5,5),time_unit='minsec')
+```
+
 TODO:
 
 * Complete option integration at initialization in engine.py.
 * Add non-Unix support.
 * Documentation
 * Implementation of safety features for engine crashes (isready, ect.)
-* Make thing to allow use of seconds as time.
+* ~~Make thing to allow use of seconds as time.~~
 * Recognise tie games.
 (... more stuff)

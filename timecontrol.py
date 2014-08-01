@@ -1,17 +1,24 @@
 """
 Time control.
 
-All times are referred to in milliseconds as per UCI protocol.
+All times are referred to in milliseconds as per UCI protocol, unless
+time_modifier kwarg is used.
 """
 import time
 
 class TimeControl:
-    def __init__(self, starttime, inc=0):
+    def __init__(self, starttime, inc=0, **kwargs):
         """
         starttime is the time at start in milliseconds
             -> for different start times, use a tuple
         inc is the time added to the clock after each turn in milliseconds
             -> for different incrementations, use a tuple
+
+        'time_unit' is a kwarg which allows starttime and inc to use units
+        different from milliseconds.
+           -> 'min' for minutes. (values passed will be multiplied by 60 000)
+           -> 'sec' for seconds  (values passed will be multiplied by 1 000)
+           -> 'minsec' to use minutes for starttime and seconds for inc.
         """
 
         #Process different start times.
@@ -30,6 +37,23 @@ class TimeControl:
             whiteInc = blackInc = inc
         self.increment = [whiteInc, blackInc]
 
+        #Process time_modifier
+        if 'time_unit' in kwargs:
+            st_mod = inc_mod = 1
+            if kwargs['time_unit'] == 'min':
+                st_mod = inc_mod = 60000 #60 seconds = 60k milliseconds
+            elif kwargs['time_unit'] == 'sec':
+                st_mod = inc_mod = 1000 #1 second
+            elif kwargs['time_unit'] == 'minsec':
+                st_mod = 60000
+                inc_mod = 1000
+            else:
+                raise ValueError("Argument for time_unit is invalid")
+            
+            self.clocks = [x * st_mod for x in self.clocks]
+            self.increment = [x * inc_mod for x in self.increment]
+
+        #Turn and time variables initialization
         self._time = None
         self.turn = None # 0 for white, 1 for black.  
 

@@ -6,7 +6,8 @@ class GameSession:
         The basic GameSession class.
         whiteEng and blackEng are the two engines, with respective colors
 
-        Note: All times are in milliseconds as per UCI protocol
+        Note: All times are in milliseconds as per UCI protocol, unless
+        time_modifier is used.
 
         start_time is the time that the engines are given on the clock,
         not including this parameter will result in an untimed game. A tuple
@@ -16,24 +17,36 @@ class GameSession:
         inc is the incremented time value after each turn. Like start_time,
         it can be fed a tuple for different incrementations to each engine.
 
-        time is a tuple that combines start_time and inc in the following format:
-        time=(start_time,inc). If time is a number, the value it is passed
+        time is a tuple that combines start_time and inc 
+        in the following format: time=(start_time,inc).
+
+        If time is a single number (int, float, etc.), the value it is passed
         will be considered as start_time, and inc as 0.
         """
+
         self.white = whiteEng
         self.black = blackEng
         self.gamehistory = ""
         self.write_all_engines('position startpos\n')
         self.timed = False
-        
+
+        #Process TimeControl Arguments
+        tc_dict = {}
+            #Pass any argument in tc_dict to time control.
+        if 'tc_dict' in kwargs:
+            tc_dict.update(kwargs['tc_dict'])
+        if 'time_unit' in kwargs:
+            tc_dict['time_unit'] = kwargs['time_unit']
+            
+
         if 'time' in kwargs:
-            self.timeControl = TimeControl(*kwargs['time'])
+            self.timeControl = TimeControl(*kwargs['time'], **tc_dict)
             self.timed = True
         elif 'start_time' in kwargs:
             inc = 0
             if 'inc' in kwargs:
                 inc = kwargs['inc']
-            self.timeControl = TimeControl(kwargs['start_time'],inc)
+            self.timeControl = TimeControl(kwargs['start_time'],inc, **tc_dict)
             self.timed = True
         
     def get_move(self, engine):
