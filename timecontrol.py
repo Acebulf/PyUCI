@@ -7,26 +7,26 @@ time_modifier kwarg is used.
 import time
 
 class TimeControl:
-    def __init__(self, starttime, inc=0, **kwargs):
+    def __init__(self, start_time, inc=0, **kwargs):
         """
-        starttime is the time at start in milliseconds
+        start_time is the time at start in milliseconds
             -> for different start times, use a tuple
         inc is the time added to the clock after each turn in milliseconds
             -> for different incrementations, use a tuple
 
-        'time_unit' is a kwarg which allows starttime and inc to use units
+        'time_unit' is a kwarg which allows start_time and inc to use units
         different from milliseconds.
            -> 'min' for minutes. (values passed will be multiplied by 60 000)
            -> 'sec' for seconds  (values passed will be multiplied by 1 000)
-           -> 'minsec' to use minutes for starttime and seconds for inc.
+           -> 'minsec' to use minutes for start_time and seconds for inc.
         """
 
         #Process different start times.
         whiteTime = blackTime = None
         try:
-            whiteTime, blackTime = starttime
+            whiteTime, blackTime = start_time
         except TypeError:
-            whiteTime = blackTime = starttime
+            whiteTime = blackTime = start_time
         self.clocks = [whiteTime, blackTime]
         
         #Process different incrementation values
