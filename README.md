@@ -23,13 +23,13 @@ where all times are in milliseconds, following the UCI standard.
 
 ```Python
 #Make the clock start at 5 minutes and increment the clock by 5 seconds after each turn.
-GameSession(eng1,eng2,time=(300e3,5e3))
+GameSession(eng1,eng2,time=(300e3,5e3)).play()
 ```    
 
 or perhaps, for cleaner syntax, use minutes and seconds for the starting time
 and increment time, respectively.
 ```Python
-GameSession(eng1,eng2,time=(5,5),time_unit='minsec')
+GameSession(eng1,eng2,time=(5,5),time_unit='minsec').play()
 ```
 
 TODO:
