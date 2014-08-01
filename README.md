@@ -32,12 +32,16 @@ and increment time, respectively.
 GameSession(eng1,eng2,time=(5,5),time_unit='minsec').play()
 ```
 
-TODO:
+##TODO:
 
-* Complete option integration at initialization in engine.py.
 * Add non-Unix support.
 * Documentation
 * Implementation of safety features for engine crashes (isready, ect.)
 * ~~Make thing to allow use of seconds as time.~~
 * Recognise tie games.
-(... more stuff)
+* Implementation of pondering.
+* (... more stuff)
+
+###Option integration for full UCI-standard compliance.
+* Pondering
+* Initizlization set options (to engine)
