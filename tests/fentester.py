@@ -1,4 +1,4 @@
-from fenparser import FENOperator as FEN
+from fenoperator import FENOperator as FEN
 from sys import argv
 
 if '-silent' in argv or '-s' in argv:
