@@ -55,6 +55,31 @@ test.do_move('e8e7')
 output = 'rnbq3r/ppp1kppp/5n2/4p3/P1BpP3/R4N2/1PPP1PPP/1NBQK1R1 w - - 1 3'
 testing(test,output)
 
+#7. Checking castling (king-side white) + adding spaces to move input
+test = FEN('rnbqk1nr/pppp2pp/3b1p2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4')
+test.do_move('e1g1   ')
+output = 'rnbqk1nr/pppp2pp/3b1p2/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 b kq - 1 4'
+testing(test,output)
+
+#8. Castling (queen-side white)
+test = FEN('rnbq1knr/p1p3pp/5p2/1p1pp3/2B1P3/NPP2N2/P2PQPPP/R3K2R w KQ d6 0 10')
+test.do_move('e1c1')
+output = 'rnbq1knr/p1p3pp/5p2/1p1pp3/2B1P3/NPP2N2/P2PQPPP/2KR3R b - - 1 10'
+testing(test,output)
+
+#9. Series of moves
+test = FEN('rnbq1knr/p1p3pp/5p2/1p1pp3/2B1P3/NPP2N2/P2PQPPP/2KR3R b - - 1 10')
+test.do_move('d5e4')
+test.do_move('d2d3')
+test.do_move('e4f3')
+test.do_move('h2h3')
+test.do_move('f3g2')
+test.do_move('f2f3')
+testing(test,'rnbq1knr/p1p3pp/5p2/1p2p3/2B5/NPPP1P1P/P3Q1p1/2KR3R b - - 0 13')
+#10. Promotion
+test.do_move('g2h1q')
+testing(test,'rnbq1knr/p1p3pp/5p2/1p2p3/2B5/NPPP1P1P/P3Q3/2KR3q w - - 0 14')
+
 #Barrage of moves
 test = FEN('rnbqkb1r/ppp2ppp/5n2/4p3/P1BpP3/5N2/1PPP1PPP/RNBQK1R1 b Qkq a3 0 5')
 test.do_move('f8a3')

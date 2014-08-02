@@ -75,31 +75,52 @@ class FENOperator:
 
     def do_move(self, move):
         """
-        Move is string represented in UCI algebric notation (e.g. e2e4)
+        Move is string represented in UCI algebric notation (e.g. e2e4, e7e8q)
         """
         move = move.replace(' ','') #Remove spaces
+
         from_coords = self.coordinates(move[0:2])
         to_coords = self.coordinates(move[2:4])
 
+        #Check for promotion
+        if len(move) == 5:
+            promotion = move[4]
+            if self.turn == 'w':
+                promotion = promotion.upper()
+        else:
+            promotion = None
+
         piece = self.board[from_coords[0]][from_coords[1]]
 
-        #Reset cp_clock if piece is being captured.
+        #Reset cp_clock if piece is being captured or pawn is moved.
         if self.board[to_coords[0]][to_coords[1]] != ' ' or piece in 'pP':
             self.cp_clock = 0
         else:
             self.cp_clock = str(int(self.cp_clock) + 1)
 
-        #Increment moves counter if move is done by black
-        if self.turn == 'b':
-            self.turn = 'w'
-            self.moves = str(int(self.moves)+1)
-        else:
-            self.turn = 'b'
         
         #Move piece to new position and remove piece at old position.
-        self.board[to_coords[0]][to_coords[1]] = piece 
+        if promotion is None:
+            self.board[to_coords[0]][to_coords[1]] = piece 
+        else:
+            self.board[to_coords[0]][to_coords[1]] = promotion
         self.board[from_coords[0]][from_coords[1]] = ' '
 
+        #Check for castling and move rook if necessary.
+        if piece in 'kK':
+            if move == 'e1g1': #king-side white castling
+                self.board[0][7] = ' '
+                self.board[0][5] = 'R'
+            elif move == 'e1c1':#queen-side white castling
+                self.board[0][0] = ' '
+                self.board[0][3] = 'R'
+            elif move == 'e8g8':#king-side black castling
+                self.board[7][7] = ' '
+                self.board[7][5] = 'r'
+            elif move == 'e8c8':#queen-side black castling
+                self.board[7][0] = ' '
+                self.board[7][3] = 'r'
+            
         #Removing castling rights if king is moved.
         if piece == 'k':
             self.castling = self.castling.replace('k','').replace('q','')
@@ -125,10 +146,18 @@ class FENOperator:
             self.ep = self.to_string((5,from_coords[1]))
         else:
             self.ep = '-'
+
+        #Increment moves counter if move is done by black
+        if self.turn == 'b':
+            self.turn = 'w'
+            self.moves = str(int(self.moves)+1)
+        else:
+            self.turn = 'b'
         
     def __str__(self):
         return self.outputFEN()
 
     def getPositionOnly(self):
         return self.outputFEN(True) #positionOnly = True
-    
+
+        
