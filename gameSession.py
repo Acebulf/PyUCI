@@ -1,4 +1,5 @@
 from timecontrol import TimeControl
+from fenoperator import FENOperator
 
 class GameSession:
     def __init__(self,whiteEng, blackEng, **kwargs):
@@ -30,6 +31,10 @@ class GameSession:
         self.write_all_engines('position startpos\n')
         self.timed = False
 
+        self.tied = False
+        self.tiereason = ''
+        self.winner = None
+
         #Process TimeControl Arguments
         tc_dict = {}
             #Pass any argument in tc_dict to time control.
@@ -49,6 +54,11 @@ class GameSession:
             self.timeControl = TimeControl(kwargs['start_time'],inc, **tc_dict)
             self.timed = True
         
+        #Tie testing (repeated moves)
+        self.played_positions = {}
+        self.FENOp = FENOperator('startpos')
+        self.played_positions[self.FENOp.getPositionOnly()] = 1
+
     def get_move(self, engine):
         command = 'go'
         
@@ -67,6 +77,7 @@ class GameSession:
     def update_board(self,position):
         if "none" in position:
             return False
+        self.tied = self.check_tie(position) #Also updates FENOperator
         self.gamehistory += " {0}".format(position)
         self.write_all_engines('position startpos moves {0}\n'
                                .format(self.gamehistory))
@@ -92,6 +103,10 @@ class GameSession:
                     print "Black checkmates"
                 break
 
+            if self.tied:
+                print "Draw by {0}".format(self.tiereason)
+                break
+
             # Check for time
             if self.timed:
                 if not self.timeControl.stop():
@@ -105,3 +120,24 @@ class GameSession:
                     break
                         
             turn = -(turn -1) # 0 -> 1; 1 -> 0
+
+    def check_tie(self, move):
+        """
+        Checks for tie and updates FENOperator
+        """
+        self.FENOp.do_move(move)
+        newstr = self.FENOp.getPositionOnly()
+        
+        if newstr in self.played_positions:
+            self.played_positions[newstr] += 1
+            if self.played_positions[newstr] >= 3:
+                self.tiereason = '3 move repeat'
+                return True
+        else:
+            self.played_positions[newstr] = 1
+
+        if self.FENOp.cp_clock >= 100:
+            self.tiereason = '50 moves without capture or pawn moving'
+            return True
+        
+        return False
