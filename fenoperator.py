@@ -6,6 +6,10 @@ class FENOperator:
     def __init__(self,_FEN):
         self.FEN = _FEN
 
+        #Allow starting the fen with 'startpos'
+        if self.FEN == 'startpos':
+            self.FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+
         #Split into its base components
         FENSplit = self.FEN.split(' ') 
 
@@ -36,10 +40,9 @@ class FENOperator:
 
         return boardFEN
 
-    def outputFEN(self):
+    def outputFEN(self, positionOnly=False):
         boardFEN = list(self.board)
         boardFEN.reverse()
-        assert boardFEN != self.board
         boardStr = ''
         for line in boardFEN:
             for x in line:
@@ -51,9 +54,13 @@ class FENOperator:
         
         if self.castling == '':
             self.castling = '-'
+
+        if positionOnly: #Return a shorter version for tie checking
+            return '{0} {1} {2}'.format(boardStr,self.turn,self.castling)
+
         return '{0} {1} {2} {3} {4} {5}'.format(boardStr, self.turn,
-                                                    self.castling, self.ep,
-                                                    self.cp_clock, self.moves)
+                                                self.castling, self.ep,
+                                                self.cp_clock, self.moves)
 
     
     def coordinates(self, pos):
@@ -121,6 +128,7 @@ class FENOperator:
         
     def __str__(self):
         return self.outputFEN()
-        
-        
+
+    def getPositionOnly(self):
+        return self.outputFEN(True) #positionOnly = True
     
