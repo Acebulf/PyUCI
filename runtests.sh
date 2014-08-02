@@ -1,1 +1,1 @@
-python -m tests/fentester
+python -m tests/fentester -s
