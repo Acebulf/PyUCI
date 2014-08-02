@@ -136,7 +136,7 @@ class GameSession:
         else:
             self.played_positions[newstr] = 1
 
-        if self.FENOp.cp_clock >= 100:
+        if int(self.FENOp.cp_clock) >= 100:
             self.tiereason = '50 moves without capture or pawn moving'
             return True
         

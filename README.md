@@ -36,12 +36,14 @@ GameSession(eng1,eng2,time=(5,5),time_unit='minsec').play()
 
 * Add non-Unix support.
 * Documentation
-* Implementation of safety features for engine crashes (isready, ect.)
-* ~~Make thing to allow use of seconds as time.~~
-* Recognise tie games.
-* Implementation of pondering.
+* Comprehensive testing
 * (... more stuff)
 
 ###Option integration for full UCI-standard compliance.
+* Implementation of safety features for engine crashes (isready, ect.)
 * Pondering
 * Initizlization set options (to engine)
+
+###Done:
+* ~~Make thing to allow use of seconds as time.~~
+* ~~Recognise tie games.~~
