@@ -8,7 +8,7 @@ class GameSession:
         whiteEng and blackEng are the two engines, with respective colors
 
         Note: All times are in milliseconds as per UCI protocol, unless
-        time_modifier is used.
+        time_modifier (see the TimeControl class) is used.
 
         start_time is the time that the engines are given on the clock,
         not including this parameter will result in an untimed game. A tuple
@@ -23,12 +23,14 @@ class GameSession:
 
         If time is a single number (int, float, etc.), the value it is passed
         will be considered as start_time, and inc as 0.
+
+        The position keyword argument is used to pass a FEN value as the starting position,
+        when not used, the default starting position (startpos) is used.
         """
 
         self.white = whiteEng
         self.black = blackEng
         self.gamehistory = ""
-        self.write_all_engines('position startpos\n')
         self.timed = False
 
         self.tied = False
@@ -53,11 +55,17 @@ class GameSession:
                 inc = kwargs['inc']
             self.timeControl = TimeControl(kwargs['start_time'],inc, **tc_dict)
             self.timed = True
+
+        starting_position = 'startpos'
+        if 'position' in kwargs:
+            starting_position = kwargs['position']
+        
         
         #Tie testing (repeated moves)
         self.played_positions = {}
-        self.FENOp = FENOperator('startpos')
+        self.FENOp = FENOperator(starting_position)
         self.played_positions[self.FENOp.getPositionOnly()] = 1
+        self.write_all_engines('position fen {0}\n'.format(self.FENOp))
 
     def get_move(self, engine):
         command = 'go'
@@ -79,8 +87,7 @@ class GameSession:
             return False
         self.tied = self.check_tie(position) #Also updates FENOperator
         self.gamehistory += " {0}".format(position)
-        self.write_all_engines('position startpos moves {0}\n'
-                               .format(self.gamehistory))
+        self.write_all_engines('position fen {0}\n'.format(self.FENOp))
         return True
 
     def write_all_engines(self,message):
@@ -104,6 +111,7 @@ class GameSession:
                 break
 
             if self.tied:
+                print self.gamehistory
                 print "Draw by {0}".format(self.tiereason)
                 break
 
