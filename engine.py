@@ -1,3 +1,12 @@
+"""
+This is the base class for io with Chess Engines.
+
+2014-08-07 -- Version 0.2 with non-blocking IO supporting non-unix machines.
+2014-07-29 -- Patrick Poitras (acebulf at gmail dot com)
+
+View LICENSE file in the github repo for license.
+"""
+
 import subprocess
 from threading import Thread
 from Queue import Queue,Empty
