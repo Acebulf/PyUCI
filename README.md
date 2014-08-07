@@ -34,7 +34,6 @@ GameSession(eng1,eng2,time=(5,5),time_unit='minsec').play()
 
 ##TODO:
 
-* Add non-Unix support.
 * Documentation
 * Comprehensive testing
 * (... more stuff)
@@ -47,3 +46,4 @@ GameSession(eng1,eng2,time=(5,5),time_unit='minsec').play()
 ###Done:
 * ~~Make thing to allow use of seconds as time.~~
 * ~~Recognise tie games.~~
+* ~~Add non-unix support.~~
