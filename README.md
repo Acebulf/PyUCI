@@ -1,7 +1,7 @@
 PyUCI
 =====
 
-The Python UCI Chess Engine Interface (PUCEI or PyUCI) allows communication with a UCI-enabled chess engine from Python 2.x on Unix-based machines.
+The Python UCI Chess Engine Interface (PUCEI or PyUCI) allows communication with a UCI-enabled chess engine from Python 2.x
 
 In very early stages of development.
 
