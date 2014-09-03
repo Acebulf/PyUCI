@@ -133,6 +133,9 @@ class GameSession:
         """
         Checks for tie and updates FENOperator
         """
+        if self.white.score == 0 and self.black.score == 0:
+            return True
+
         self.FENOp.do_move(move)
         newstr = self.FENOp.getPositionOnly()
         

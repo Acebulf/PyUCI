@@ -13,6 +13,7 @@ from Queue import Queue,Empty
 
 class Engine:
     def __init__(self, _filepath, **kwargs):
+        self.score = 0 # Score in centipawns
         self.filepath = _filepath
         self.engineInst = subprocess.Popen(self.filepath,
                                            universal_newlines=True,
@@ -44,6 +45,12 @@ class Engine:
             if message is None:
                 break
             else:
+                if "score cp" in message:
+                    try:
+                        ind = message.index('score cp ')
+                        self.score = int(message[ind + 9 : x.index(' ', ind + 9)])
+        except ValueError:
+            pass
                 yield message
 
     def close(self):
