@@ -19,7 +19,6 @@ class Engine:
                                            universal_newlines=True,
                                            stdout=subprocess.PIPE,
                                            stdin=subprocess.PIPE)
-
         self.queue = Queue()
         self.stdout_thread = Thread(target = self.enqueue)
         self.stdout_thread.daemon = True
@@ -48,10 +47,10 @@ class Engine:
                 if "score cp" in message:
                     try:
                         ind = message.index('score cp ')
-                        self.score = int(message[ind + 9 : x.index(' ', ind + 9)])
-        except ValueError:
-            pass
-                yield message
+                        self.score = int(message[ind + 9 : message.index(' ', ind + 9)])
+                    except ValueError:
+                        pass
+            yield message
 
     def close(self):
         self.engineInst.terminate()
