@@ -59,7 +59,8 @@ class GameSession:
         starting_position = 'startpos'
         if 'position' in kwargs:
             starting_position = kwargs['position']
-            
+        
+        global printmoves
         if 'show' in kwargs:
             if kwargs['show'] == True:
                 printmoves = True
@@ -95,6 +96,7 @@ class GameSession:
             return False
         self.tied = self.check_tie(position) #Also updates FENOperator
         self.gamehistory += " {0}".format(position)
+        printmoves = True
         if printmoves:
             print self.gamehistory
         self.write_all_engines('position fen {0}\n'.format(self.FENOp))

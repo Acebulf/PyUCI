@@ -46,11 +46,12 @@ class Engine:
             else:
                 if "score cp" in message:
                     try:
-                        ind = message.index('score cp ')
-                        self.score = int(message[ind + 9 : message.index(' ', ind + 9)])
-                    except ValueError:
+                        ind = message.split('score cp ')[1]
+                        self.score = int(ind[0:ind.index(' ')])
+                        #print message
+                    except IndexError:
                         pass
-            yield message
+                yield message
 
     def close(self):
         self.engineInst.terminate()
